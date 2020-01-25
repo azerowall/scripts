@@ -1,0 +1,72 @@
+<html>
+<head>
+</head>
+<body>
+
+	<a href="another-page.html">Другая страница</a>
+	
+	<form method="POST" action="another-page.html">
+		<div>
+			<input name="login" type="text" width="100">
+			<span><input type="submit"></span>
+		</div>
+	</form>
+
+	<script>
+		function loadPage(method, url, data)
+		{
+			var xhr = new XMLHttpRequest();
+			xhr.open(method, url, false);
+			xhr.send(data);
+			if (xhr.status == 200)
+				document.write(xhr.responseText);
+		}
+		function onclickAnchor()
+		{
+			loadPage('GET', this.href);
+			return false;
+		}
+		function onsubmitForm()
+		{
+			console.log(formData(this));
+			loadPage('POST', this.action, formData(this));
+			return false;
+		}
+		function formData(form)
+		{
+			var data = []
+			for (var i = 0; i < form.elements.length; i++)
+			{
+				var e = form.elements[i];
+				if (e.name)
+					data.push(e.name + '=' + encodeURIComponent(e.value));
+			}
+			return data.join('&');
+		}
+		
+		function initHooks()
+		{
+			// anchors
+			var anchors = document.getElementsByTagName('A');
+			for (var i = 0; i < anchors.length; i++)
+			{
+				var a = anchors[i];
+				if (/(?:\/|\/\/|\w)/.test(a.href))
+					a.onclick = onclickAnchor;
+			}
+			
+			// forms
+			for (var i = 0; i < document.forms.length; i++)
+				document.forms[i].onsubmit = onsubmitForm;
+		}
+		document.addEventListener('DOMContentLoaded', function() {
+            initHooks();
+
+            setInterval(function(){
+                console.log("I'm still alive!"); // failed
+            }, 3000);
+        });
+		
+	</script>
+</body>
+</html>
