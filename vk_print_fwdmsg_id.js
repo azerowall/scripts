@@ -16,4 +16,4 @@ function xForwardedMessagesShowConversationId() {
     }
 }
 
-xForwardedMessagePrintConversationId();
+xForwardedMessagesShowConversationId();
